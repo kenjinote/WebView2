@@ -14,9 +14,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	switch (msg)
 	{
-	case WM_CREATE:
-		SendMessage(hWnd, WM_APP, 0, 0);
-		break;
 	case WM_SIZE:
 		if (webviewController != nullptr)
 		{
@@ -25,20 +22,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 			webviewController->put_Bounds(bounds);
 		}
 		break;
-	case WM_NCCREATE:
-		{
-			const HMODULE hModUser32 = GetModuleHandle(TEXT("user32.dll"));
-			if (hModUser32)
-			{
-				typedef BOOL(WINAPI*fnTypeEnableNCScaling)(HWND);
-				const fnTypeEnableNCScaling fnEnableNCScaling = (fnTypeEnableNCScaling)GetProcAddress(hModUser32, "EnableNonClientDpiScaling");
-				if (fnEnableNCScaling)
-				{
-					fnEnableNCScaling(hWnd);
-				}
-			}
-		}
-		return DefWindowProc(hWnd, msg, wParam, lParam);
 	case WM_DESTROY:
 		PostQuitMessage(0);
 		break;
